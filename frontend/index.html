@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUTA Students Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Federal University of Technology Akure</h1>
+            <h2>Computer Science Students Management</h2>
+        </header>
+
+        <div class="form-section">
+            <h3>Add/Update Student</h3>
+            <form id="studentForm">
+                <input type="hidden" id="studentId">
+                <div class="form-group">
+                    <label for="matricNumber">Matric Number:</label>
+                    <input type="text" id="matricNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone">
+                </div>
+                <div class="form-group">
+                    <label for="level">Level:</label>
+                    <select id="level" required>
+                        <option value="">Select Level</option>
+                        <option value="100">100 Level</option>
+                        <option value="200">200 Level</option>
+                        <option value="300">300 Level</option>
+                        <option value="400">400 Level</option>
+                        <option value="500">500 Level</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" id="submitBtn">Add Student</button>
+                    <button type="button" id="cancelBtn" onclick="resetForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="students-section">
+            <h3>Students List</h3>
+            <button onclick="loadStudents()" class="refresh-btn">Refresh</button>
+            <div id="studentsContainer">
+                <p>Loading students...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
