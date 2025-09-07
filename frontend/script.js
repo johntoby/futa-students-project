@@ -85,40 +85,41 @@ function displayStudents(students) {
         return;
     }
 
-    const studentsHTML = students.map(student => `
-        <div class="student-card">
-            <div class="student-header">
-                <div>
-                    <div class="student-name">${student.first_name} ${student.last_name}</div>
-                    <div class="student-matric">${student.matric_number}</div>
-                </div>
-            </div>
-            <div class="student-details">
-                <div class="student-detail">
-                    <span class="detail-label">Email:</span>
-                    <span class="detail-value">${student.email}</span>
-                </div>
-                <div class="student-detail">
-                    <span class="detail-label">Phone:</span>
-                    <span class="detail-value">${student.phone || 'N/A'}</span>
-                </div>
-                <div class="student-detail">
-                    <span class="detail-label">Level:</span>
-                    <span class="detail-value">${student.level} Level</span>
-                </div>
-                <div class="student-detail">
-                    <span class="detail-label">Department:</span>
-                    <span class="detail-value">${student.department}</span>
-                </div>
-            </div>
-            <div class="student-actions">
-                <button class="edit-btn" onclick="editStudent(${student.id})">Edit</button>
-                <button class="delete-btn" onclick="deleteStudent(${student.id})">Delete</button>
-            </div>
-        </div>
-    `).join('');
+    const tableHTML = `
+        <table class="students-table">
+            <thead>
+                <tr>
+                    <th>Matric Number</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Level</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${students.map(student => `
+                    <tr>
+                        <td>${student.matric_number}</td>
+                        <td class="student-name">${student.first_name} ${student.last_name}</td>
+                        <td>${student.email}</td>
+                        <td>${student.phone || 'N/A'}</td>
+                        <td>${student.level} Level</td>
+                        <td>${student.department}</td>
+                        <td>
+                            <div class="student-actions">
+                                <button class="edit-btn" onclick="editStudent(${student.id})">Edit</button>
+                                <button class="delete-btn" onclick="deleteStudent(${student.id})">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
 
-    container.innerHTML = studentsHTML;
+    container.innerHTML = tableHTML;
 }
 
 // Edit student
