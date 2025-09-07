@@ -28,9 +28,30 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // API Routes
 app.use('/api/v1', routes);
 
+// Direct healthcheck for testing
+app.get('/healthcheck', (req, res) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    service: 'FUTA Students API'
+  });
+});
+
 // Root endpoint
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+// API info endpoint
+app.get('/api', (req, res) => {
+  res.json({
+    message: 'FUTA Students API',
+    version: '1.0.0',
+    endpoints: {
+      healthcheck: '/api/v1/healthcheck',
+      students: '/api/v1/students'
+    }
+  });
 });
 
 // Error handling middleware

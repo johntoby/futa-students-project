@@ -51,9 +51,11 @@ document.getElementById('studentForm').addEventListener('submit', async function
             loadStudents();
         } else {
             const error = await response.json();
-            alert('Error: ' + error.error);
+            console.error('API Error:', error);
+            alert('Error: ' + (error.error || 'Unknown error'));
         }
     } catch (error) {
+        console.error('Network Error:', error);
         alert('Network error: ' + error.message);
     }
 });
