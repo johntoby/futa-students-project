@@ -1,7 +1,8 @@
-const API_BASE_URL = '/api/v1';
+const API_BASE_URL = `${window.location.protocol}//${window.location.host}/api/v1`;
 
 // Load students when page loads
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('API Base URL:', API_BASE_URL);
     loadStudents();
     checkDatabaseStatus();
     // Check database status every 30 seconds
@@ -63,16 +64,20 @@ document.getElementById('studentForm').addEventListener('submit', async function
 // Load all students
 async function loadStudents() {
     try {
+        console.log('Loading students from:', `${API_BASE_URL}/students`);
         const response = await fetch(`${API_BASE_URL}/students`);
         const result = await response.json();
         
         if (response.ok) {
+            console.log('Students loaded:', result);
             displayStudents(result.data);
         } else {
+            console.error('Failed to load students:', result);
             document.getElementById('studentsContainer').innerHTML = 
                 '<p class="no-students">Error loading students</p>';
         }
     } catch (error) {
+        console.error('Network error loading students:', error);
         document.getElementById('studentsContainer').innerHTML = 
             '<p class="no-students">Network error loading students</p>';
     }
@@ -187,17 +192,21 @@ async function checkDatabaseStatus() {
     const statusIndicator = document.getElementById('statusIndicator');
     
     try {
+        console.log('Checking health at:', `${API_BASE_URL}/healthcheck`);
         const response = await fetch(`${API_BASE_URL}/healthcheck`);
         
         if (response.ok) {
             const result = await response.json();
+            console.log('Health check result:', result);
             statusIndicator.textContent = 'Online';
             statusIndicator.className = 'status-indicator status-online';
         } else {
+            console.error('Health check failed:', response.status);
             statusIndicator.textContent = 'Error';
             statusIndicator.className = 'status-indicator status-offline';
         }
     } catch (error) {
+        console.error('Health check error:', error);
         statusIndicator.textContent = 'Offline';
         statusIndicator.className = 'status-indicator status-offline';
     }
