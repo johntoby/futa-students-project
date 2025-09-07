@@ -48,12 +48,18 @@ async function startServer() {
   try {
     await database.connect();
     
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       logger.info(`FUTA Students API server running on port ${PORT}`);
       logger.info(`Environment: ${process.env.NODE_ENV}`);
+      logger.info(`Frontend: http://localhost:${PORT}`);
+      logger.info(`API: http://localhost:${PORT}/api/v1`);
     });
   } catch (error) {
     logger.error('Failed to start server:', error);
+    console.error('Database connection failed. Please check:');
+    console.error('1. PostgreSQL is running');
+    console.error('2. Database exists: ' + process.env.DB_NAME);
+    console.error('3. Credentials are correct');
     process.exit(1);
   }
 }
