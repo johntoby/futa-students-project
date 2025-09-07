@@ -11,59 +11,61 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners
     document.getElementById('cancelBtn').addEventListener('click', resetForm);
     document.getElementById('refreshBtn').addEventListener('click', loadStudents);
-});
-
-// Form submission handler
-document.getElementById('studentForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
     
-    const studentId = document.getElementById('studentId').value;
-    const studentData = {
-        matric_number: document.getElementById('matricNumber').value,
-        first_name: document.getElementById('firstName').value,
-        last_name: document.getElementById('lastName').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        level: parseInt(document.getElementById('level').value)
-    };
+    // Form submission handler
+    document.getElementById('studentForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const studentId = document.getElementById('studentId').value;
+        const studentData = {
+            matric_number: document.getElementById('matricNumber').value,
+            first_name: document.getElementById('firstName').value,
+            last_name: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            level: parseInt(document.getElementById('level').value)
+        };
 
-    try {
-        let response;
-        if (studentId) {
-            // Update existing student
-            response = await fetch(`${API_BASE_URL}/students/${studentId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(studentData)
-            });
-        } else {
-            // Create new student
-            response = await fetch(`${API_BASE_URL}/students`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(studentData)
-            });
-        }
+        try {
+            let response;
+            if (studentId) {
+                // Update existing student
+                response = await fetch(`${API_BASE_URL}/students/${studentId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(studentData)
+                });
+            } else {
+                // Create new student
+                response = await fetch(`${API_BASE_URL}/students`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(studentData)
+                });
+            }
 
-        if (response.ok) {
-            const result = await response.json();
-            alert(result.message);
-            resetForm();
-            loadStudents();
-        } else {
-            const error = await response.json();
-            console.error('API Error:', error);
-            alert('Error: ' + (error.error || 'Unknown error'));
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message);
+                resetForm();
+                loadStudents();
+            } else {
+                const error = await response.json();
+                console.error('API Error:', error);
+                alert('Error: ' + (error.error || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Network Error:', error);
+            alert('Network error: ' + error.message);
         }
-    } catch (error) {
-        console.error('Network Error:', error);
-        alert('Network error: ' + error.message);
-    }
+    });
 });
+
+
 
 // Load all students
 async function loadStudents() {
