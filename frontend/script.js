@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     checkDatabaseStatus();
     // Check database status every 30 seconds
     setInterval(checkDatabaseStatus, 30000);
+    
+    // Add event listeners
+    document.getElementById('cancelBtn').addEventListener('click', resetForm);
+    document.getElementById('refreshBtn').addEventListener('click', loadStudents);
 });
 
 // Form submission handler
@@ -116,8 +120,8 @@ function displayStudents(students) {
                         <td>${student.department}</td>
                         <td>
                             <div class="student-actions">
-                                <button class="edit-btn" onclick="editStudent(${student.id})">Edit</button>
-                                <button class="delete-btn" onclick="deleteStudent(${student.id})">Delete</button>
+                                <button class="edit-btn" data-id="${student.id}" data-action="edit">Edit</button>
+                                <button class="delete-btn" data-id="${student.id}" data-action="delete">Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -127,6 +131,18 @@ function displayStudents(students) {
     `;
 
     container.innerHTML = tableHTML;
+    
+    // Add event listeners for action buttons
+    container.addEventListener('click', function(e) {
+        const id = e.target.dataset.id;
+        const action = e.target.dataset.action;
+        
+        if (action === 'edit') {
+            editStudent(id);
+        } else if (action === 'delete') {
+            deleteStudent(id);
+        }
+    });
 }
 
 // Edit student

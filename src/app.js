@@ -13,7 +13,17 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(helmet({
-  crossOriginOpenerPolicy: false
+  crossOriginOpenerPolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:"],
+      connectSrc: ["'self'"],
+      formAction: ["'self'"]
+    }
+  }
 }));
 app.use(cors({
   origin: true,
@@ -69,7 +79,7 @@ async function startServer() {
   try {
     await database.connect();
     
-    app.listen(PORT, '0.0.0.0', () => {
+    app.listen(PORT, () => {
       logger.info(`FUTA Students API server running on port ${PORT}`);
       logger.info(`Environment: ${process.env.NODE_ENV}`);
       logger.info(`Frontend: http://localhost:${PORT}`);
