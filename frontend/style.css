@@ -5,10 +5,11 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f4f4f4;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
 }
 
 .container {
@@ -18,22 +19,92 @@ body {
 }
 
 header {
-    text-align: center;
     margin-bottom: 30px;
-    background: #2c3e50;
+    background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
     color: white;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(34, 139, 34, 0.3);
 }
 
-header h1 {
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.futa-logo {
+    background: white;
+    color: #228B22;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header-text h1 {
     font-size: 2rem;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-header h2 {
-    font-size: 1.2rem;
-    font-weight: normal;
+.header-text h2 {
+    font-size: 1.1rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+.status-section {
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.db-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-label {
+    font-weight: 500;
+}
+
+.status-indicator {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.status-online {
+    background: #4CAF50;
+    color: white;
+}
+
+.status-offline {
+    background: #f44336;
+    color: white;
+}
+
+.status-checking {
+    background: #ff9800;
+    color: white;
 }
 
 .form-section, .students-section {
@@ -46,9 +117,10 @@ header h2 {
 
 .form-section h3, .students-section h3 {
     margin-bottom: 20px;
-    color: #2c3e50;
-    border-bottom: 2px solid #3498db;
+    color: #228B22;
+    border-bottom: 3px solid #32CD32;
     padding-bottom: 10px;
+    font-size: 1.3rem;
 }
 
 .form-group {
@@ -71,7 +143,8 @@ header h2 {
 
 .form-group input:focus, .form-group select:focus {
     outline: none;
-    border-color: #3498db;
+    border-color: #32CD32;
+    box-shadow: 0 0 0 3px rgba(50, 205, 50, 0.1);
 }
 
 .form-buttons {
@@ -90,12 +163,15 @@ button {
 }
 
 #submitBtn {
-    background-color: #27ae60;
+    background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
     color: white;
+    box-shadow: 0 2px 8px rgba(34, 139, 34, 0.3);
 }
 
 #submitBtn:hover {
-    background-color: #219a52;
+    background: linear-gradient(135deg, #1e7b1e 0%, #2eb82e 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(34, 139, 34, 0.4);
 }
 
 #cancelBtn {
@@ -108,13 +184,16 @@ button {
 }
 
 .refresh-btn {
-    background-color: #3498db;
+    background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
     color: white;
     margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(34, 139, 34, 0.3);
 }
 
 .refresh-btn:hover {
-    background-color: #2980b9;
+    background: linear-gradient(135deg, #1e7b1e 0%, #2eb82e 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(34, 139, 34, 0.4);
 }
 
 .student-card {
@@ -135,7 +214,7 @@ button {
 .student-name {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #2c3e50;
+    color: #228B22;
 }
 
 .student-matric {
@@ -157,12 +236,12 @@ button {
 
 .detail-label {
     font-weight: bold;
-    color: #34495e;
+    color: #228B22;
     font-size: 0.9rem;
 }
 
 .detail-value {
-    color: #2c3e50;
+    color: #333;
 }
 
 .student-actions {
@@ -202,6 +281,16 @@ button {
 @media (max-width: 768px) {
     .container {
         padding: 10px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .logo-section {
+        flex-direction: column;
+        text-align: center;
     }
     
     .form-buttons {

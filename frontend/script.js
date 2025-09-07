@@ -3,6 +3,9 @@ const API_BASE_URL = '/api/v1';
 // Load students when page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadStudents();
+    checkDatabaseStatus();
+    // Check database status every 30 seconds
+    setInterval(checkDatabaseStatus, 30000);
 });
 
 // Form submission handler
@@ -174,4 +177,25 @@ function resetForm() {
     document.getElementById('studentForm').reset();
     document.getElementById('studentId').value = '';
     document.getElementById('submitBtn').textContent = 'Add Student';
+}
+
+// Check database status
+async function checkDatabaseStatus() {
+    const statusIndicator = document.getElementById('statusIndicator');
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/healthcheck`);
+        
+        if (response.ok) {
+            const result = await response.json();
+            statusIndicator.textContent = 'Online';
+            statusIndicator.className = 'status-indicator status-online';
+        } else {
+            statusIndicator.textContent = 'Error';
+            statusIndicator.className = 'status-indicator status-offline';
+        }
+    } catch (error) {
+        statusIndicator.textContent = 'Offline';
+        statusIndicator.className = 'status-indicator status-offline';
+    }
 }
