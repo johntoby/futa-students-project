@@ -84,14 +84,20 @@ stop:
 # Run tests
 test:
 	@echo "🧪 Running tests..."
+	@echo "🧹 Cleaning up existing test database..."
+	@docker stop test-postgres 2>/dev/null || true
+	@docker rm test-postgres 2>/dev/null || true
 	@echo "🐘 Starting test database..."
 	@docker run -d --name test-postgres \
 		-e POSTGRES_DB=futa_students_test \
 		-e POSTGRES_USER=postgres \
 		-e POSTGRES_PASSWORD=postgres123 \
 		-p 5433:5432 \
-		postgres:15-alpine 2>/dev/null || true
-	@sleep 5
+		postgres:15-alpine
+	@sleep 10
+	@echo "📊 Running test database migrations..."
+	@DB_HOST=localhost DB_PORT=5433 DB_NAME=futa_students_test DB_USER=postgres DB_PASSWORD=postgres123 node src/migrations/migrate.js
+	@echo "🧪 Running tests..."
 	@DB_HOST=localhost DB_PORT=5433 DB_NAME=futa_students_test DB_USER=postgres DB_PASSWORD=postgres123 npm test
 	@echo "🧹 Cleaning up test database..."
 	@docker stop test-postgres 2>/dev/null || true
