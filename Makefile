@@ -49,20 +49,20 @@ check-db:
 	@docker stop $(DB_CONTAINER_NAME) 2>/dev/null || true
 	@docker rm $(DB_CONTAINER_NAME) 2>/dev/null || true
 	@echo "🐘 Starting fresh database container..."
-	@docker-compose up -d postgres
+	@docker compose up -d postgres
 	@echo "⏳ Waiting for database to be ready..."
 	@sleep 15
 
 # Check if migrations are applied
 check-migrations:
 	@echo "📊 Running database migrations..."
-	@docker-compose exec app node src/migrations/migrate.js
+	@docker compose exec app node src/migrations/migrate.js
 	@echo "✅ Migrations completed"
 
 # Run REST API docker container with dependencies
 run-api: check-db
 	@echo "🌐 Starting REST API with Docker Compose..."
-	@docker-compose up -d --build app
+	@docker compose up -d --build app
 	@echo "⏳ Waiting for API to start..."
 	@sleep 10
 	@make check-migrations
@@ -73,7 +73,7 @@ run-api: check-db
 # Stop containers
 stop:
 	@echo "🛑 Stopping containers..."
-	@docker-compose down
+	@docker compose down
 	@echo "✅ Containers stopped"
 
 # Clean up
