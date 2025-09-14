@@ -45,30 +45,26 @@ build-api:
 
 # Check if DB is running
 check-db:
-	@if ! docker ps --format "table {{.Names}}" | grep -q $(DB_CONTAINER_NAME); then \
-		echo "🐘 Database not running, starting..."; \
-		make start-db; \
-		sleep 10; \
-	else \
-		echo "✅ Database already running"; \
-	fi
+	@echo "🔍 Checking database status..."
+	@docker stop $(DB_CONTAINER_NAME) 2>/dev/null || true
+	@docker rm $(DB_CONTAINER_NAME) 2>/dev/null || true
+	@echo "🐘 Starting fresh database container..."
+	@docker-compose up -d postgres
+	@echo "⏳ Waiting for database to be ready..."
+	@sleep 15
 
 # Check if migrations are applied
 check-migrations:
-	@if ! docker exec $(DB_CONTAINER_NAME) psql -U postgres -d futa_students -c "SELECT 1 FROM information_schema.tables WHERE table_name='students'" 2>/dev/null | grep -q "1 row"; then \
-		echo "📊 Migrations not applied, running..."; \
-		sleep 5; \
-		docker exec $(API_CONTAINER_NAME) node src/migrations/migrate.js; \
-	else \
-		echo "✅ Migrations already applied"; \
-	fi
+	@echo "📊 Running database migrations..."
+	@docker-compose exec app node src/migrations/migrate.js
+	@echo "✅ Migrations completed"
 
 # Run REST API docker container with dependencies
-run-api: check-db build-api
+run-api: check-db
 	@echo "🌐 Starting REST API with Docker Compose..."
-	docker compose up -d app
+	@docker-compose up -d --build app
 	@echo "⏳ Waiting for API to start..."
-	sleep 10
+	@sleep 10
 	@make check-migrations
 	@echo "✅ API deployment complete!"
 	@echo "🌍 Application: http://localhost:3000"
@@ -77,8 +73,7 @@ run-api: check-db build-api
 # Stop containers
 stop:
 	@echo "🛑 Stopping containers..."
-	docker stop $(API_CONTAINER_NAME) $(DB_CONTAINER_NAME) 2>/dev/null || true
-	docker rm $(API_CONTAINER_NAME) $(DB_CONTAINER_NAME) 2>/dev/null || true
+	@docker-compose down
 	@echo "✅ Containers stopped"
 
 # Clean up
