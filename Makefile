@@ -90,8 +90,9 @@ test:
 # Run code linting
 lint:
 	@echo "🔍 Running code linting..."
-	npm install eslint@^8.0.0 --no-save
-	npx eslint src/ --fix
+	npm uninstall eslint 2>/dev/null || true
+	npm install eslint@8.57.0 --no-save
+	ESLINT_USE_FLAT_CONFIG=false npx eslint src/ --fix
 	@echo "✅ Linting completed"
 
 # Clean up
