@@ -66,7 +66,7 @@ check-migrations:
 # Run REST API docker container with dependencies
 run-api: check-db build-api
 	@echo "🌐 Starting REST API with Docker Compose..."
-	docker-compose up -d app
+	docker compose up -d app
 	@echo "⏳ Waiting for API to start..."
 	sleep 10
 	@make check-migrations
