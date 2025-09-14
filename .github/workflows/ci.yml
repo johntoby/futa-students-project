@@ -1,4 +1,4 @@
-name: FUTA Students API CI
+name: FUTA Student API CI
 
 on:
   push:
