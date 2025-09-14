@@ -90,6 +90,7 @@ test:
 # Run code linting
 lint:
 	@echo "🔍 Running code linting..."
+	npm install eslint@^8.0.0 --no-save
 	npx eslint src/ --fix
 	@echo "✅ Linting completed"
 
