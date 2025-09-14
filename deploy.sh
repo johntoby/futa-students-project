@@ -4,6 +4,11 @@
 
 echo "🚀 Starting FUTA Students API deployment..."
 
+# Clean up existing containers
+echo "🧹 Cleaning up existing containers..."
+docker stop futa-postgres futa-students-app 2>/dev/null || true
+docker rm futa-postgres futa-students-app 2>/dev/null || true
+
 # Create Docker network
 echo "📡 Creating Docker network..."
 docker network create futa-network 2>/dev/null || echo "Network already exists"
@@ -16,7 +21,7 @@ docker run -d \
   -e POSTGRES_DB=futa_students \
   -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres123 \
-  -p 5432:5432 \
+  -p 5433:5432 \
   -v futa_db_data:/var/lib/postgresql/data \
   postgres:15-alpine
 
@@ -26,8 +31,7 @@ sleep 10
 
 # Build the application image
 echo "🔨 Building application image..."
-docker build -t johntoby/futa-students-api .
-docker push johntoby/futa-students-api
+docker build -t futa-students-api .
 
 # Start application container
 echo "🌐 Starting application..."
@@ -43,7 +47,7 @@ docker run -d \
   -e DB_PASSWORD=postgres123 \
   -e NODE_ENV=production \
   -e LOG_LEVEL=info \
-  johntoby/futa-students-api
+  futa-students-api
 
 # Run database migrations
 echo "📊 Running database migrations..."
