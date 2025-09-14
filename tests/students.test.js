@@ -82,6 +82,19 @@ describe('Students API', () => {
 
   describe('GET /api/v1/students/:id', () => {
     it('should get a student by ID', async () => {
+      // First create a student
+      const studentData = {
+        matric_number: 'CSC/2020/001',
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'john.doe@student.futa.edu.ng',
+        level: 300
+      };
+      
+      await request(app)
+        .post('/api/v1/students')
+        .send(studentData);
+
       const response = await request(app)
         .get('/api/v1/students/1')
         .expect(200);
@@ -101,6 +114,19 @@ describe('Students API', () => {
 
   describe('PUT /api/v1/students/:id', () => {
     it('should update a student', async () => {
+      // First create a student
+      const studentData = {
+        matric_number: 'CSC/2020/001',
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'john.doe@student.futa.edu.ng',
+        level: 300
+      };
+      
+      await request(app)
+        .post('/api/v1/students')
+        .send(studentData);
+
       const updateData = {
         matric_number: 'CSC/2020/001',
         first_name: 'John',
@@ -121,6 +147,19 @@ describe('Students API', () => {
 
   describe('DELETE /api/v1/students/:id', () => {
     it('should delete a student', async () => {
+      // First create a student
+      const studentData = {
+        matric_number: 'CSC/2020/001',
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'john.doe@student.futa.edu.ng',
+        level: 300
+      };
+      
+      await request(app)
+        .post('/api/v1/students')
+        .send(studentData);
+
       const response = await request(app)
         .delete('/api/v1/students/1')
         .expect(200);
