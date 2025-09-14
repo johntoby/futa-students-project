@@ -30,7 +30,7 @@ jobs:
         cache: 'npm'
         
     - name: Build API
-      run: make build-api
+      run: make run-api
       
     - name: Perform code linting
       run: make lint
