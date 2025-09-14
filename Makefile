@@ -1,4 +1,4 @@
-.PHONY: help start-db migrate build-api run-api check-db check-migrations stop clean
+.PHONY: help start-db migrate build-api run-api check-db check-migrations test lint stop clean
 
 # Docker configuration
 DB_CONTAINER_NAME = futa-postgres
@@ -80,6 +80,18 @@ stop:
 	@echo "🛑 Stopping containers..."
 	@docker compose down
 	@echo "✅ Containers stopped"
+
+# Run tests
+test:
+	@echo "🧪 Running tests..."
+	npm test
+	@echo "✅ Tests completed"
+
+# Run code linting
+lint:
+	@echo "🔍 Running code linting..."
+	npx eslint src/ --fix
+	@echo "✅ Linting completed"
 
 # Clean up
 clean: stop
