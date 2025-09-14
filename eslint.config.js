@@ -1,9 +1,12 @@
+import js from '@eslint/js';
+
 export default [
+  js.configs.recommended,
   {
     files: ["src/**/*.js", "frontend/**/*.js"],
     languageOptions: {
       ecmaVersion: 2021,
-      sourceType: "module",
+      sourceType: "commonjs",
       globals: {
         console: "readonly",
         process: "readonly",
@@ -11,7 +14,8 @@ export default [
         module: "readonly",
         __dirname: "readonly",
         Buffer: "readonly",
-        global: "readonly"
+        global: "readonly",
+        exports: "writable"
       }
     },
     rules: {
