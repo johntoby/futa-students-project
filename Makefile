@@ -61,7 +61,9 @@ check-migrations:
 	@echo "✅ Migrations completed"
 
 # Run REST API docker container with dependencies
-run-api: check-db
+run-api:
+	@echo "🧹 Cleaning up existing containers..."
+	@make check-db
 	@echo "🌐 Starting REST API with Docker Compose..."
 	@docker compose up -d --build app
 	@echo "⏳ Waiting for API to start..."
