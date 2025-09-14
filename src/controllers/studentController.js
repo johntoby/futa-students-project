@@ -4,7 +4,7 @@ const logger = require('../config/logger');
 class StudentController {
   async createStudent(req, res) {
     try {
-      const { matric_number, first_name, last_name, email, phone, level } = req.body;
+      const { matric_number, first_name, last_name, email, level } = req.body;
       
       if (!matric_number || !first_name || !last_name || !email || !level) {
         return res.status(400).json({

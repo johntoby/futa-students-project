@@ -91,6 +91,7 @@ test:
 lint:
 	@echo "🔍 Running code linting..."
 	npm install eslint@9.0.0 --no-save
+	npx eslint src/ --max-warnings=0
 	npx eslint src/ --fix
 	@echo "✅ Linting completed"
 
