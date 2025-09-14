@@ -45,7 +45,8 @@ build-api:
 
 # Check if DB is running
 check-db:
-	@echo "🔍 Checking database status..."
+	@echo "🔍 Cleaning up existing containers..."
+	@docker compose down 2>/dev/null || true
 	@docker stop $(DB_CONTAINER_NAME) 2>/dev/null || true
 	@docker rm $(DB_CONTAINER_NAME) 2>/dev/null || true
 	@echo "🐘 Starting fresh database container..."
