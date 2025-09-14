@@ -49,6 +49,8 @@ check-db:
 	@docker compose down 2>/dev/null || true
 	@docker stop $(DB_CONTAINER_NAME) 2>/dev/null || true
 	@docker rm $(DB_CONTAINER_NAME) 2>/dev/null || true
+	@echo "🔫 Killing processes on port 5432..."
+	@sudo fuser -k 5432/tcp 2>/dev/null || true
 	@echo "🐘 Starting fresh database container..."
 	@docker compose up -d postgres
 	@echo "⏳ Waiting for database to be ready..."
