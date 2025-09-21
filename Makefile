@@ -59,7 +59,7 @@ check-db:
 # Check if migrations are applied
 check-migrations:
 	@echo "📊 Running database migrations..."
-	@docker compose exec app node src/migrations/migrate.js
+	@docker compose exec app1 node src/migrations/migrate.js
 	@echo "✅ Migrations completed"
 
 # Run REST API docker container with dependencies
@@ -67,13 +67,15 @@ run-api:
 	@echo "🧹 Cleaning up existing containers..."
 	@make check-db
 	@echo "🌐 Starting REST API with Docker Compose..."
-	@docker compose up -d --build app
-	@echo "⏳ Waiting for API to start..."
-	@sleep 10
+	@docker compose up -d --build
+	@echo "⏳ Waiting for services to start..."
+	@sleep 15
 	@make check-migrations
 	@echo "✅ API deployment complete!"
-	@echo "🌍 Application: http://localhost:3000"
-	@echo "🔍 Health check: http://localhost:3000/api/v1/healthcheck"
+	@echo "🌍 Load Balancer: http://localhost:8080"
+	@echo "🔍 API 1: http://localhost:8081"
+	@echo "🔍 API 2: http://localhost:8082"
+	@echo "🔍 Health check: http://localhost:8080/api/v1/healthcheck"
 
 # Stop containers
 stop:
