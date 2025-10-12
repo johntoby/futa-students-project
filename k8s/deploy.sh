@@ -6,8 +6,12 @@ echo "🚀 Deploying FUTA Students API to Kubernetes..."
 
 # Install External Secrets Operator
 echo "📦 Installing External Secrets Operator..."
-if helm repo add external-secrets https://charts.external-secrets.io && helm repo update && helm install external-secrets external-secrets/external-secrets -n external-secrets-system --create-namespace; then
+helm repo add external-secrets https://charts.external-secrets.io 2>/dev/null || true
+helm repo update
+if helm install external-secrets external-secrets/external-secrets -n external-secrets-system --create-namespace 2>/dev/null; then
     echo "✅ External Secrets Operator installed successfully"
+elif helm list -n external-secrets-system | grep -q external-secrets; then
+    echo "✅ External Secrets Operator already installed"
 else
     echo "❌ Failed to install External Secrets Operator"
     exit 1
@@ -71,8 +75,10 @@ fi
 
 # Build application image
 echo "🔨 Building application image..."
+cd ..
 if docker build -t johntoby/futa-students-api:latest .; then
     echo "✅ Application image built successfully"
+    cd k8s
 else
     echo "❌ Failed to build application image"
     exit 1
