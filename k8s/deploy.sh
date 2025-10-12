@@ -77,10 +77,15 @@ fi
 
 # Deploy External Secrets
 echo "🔗 Deploying External Secrets..."
+echo "Checking API versions..."
+kubectl api-resources | grep external-secrets
+echo "Trying to apply external secrets..."
 if kubectl apply -f manifests/external-secrets.yml; then
     echo "✅ External Secrets deployed successfully"
 else
     echo "❌ Failed to deploy External Secrets"
+    echo "Checking supported API versions:"
+    kubectl explain secretstore
     exit 1
 fi
 
