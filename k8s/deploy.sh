@@ -15,7 +15,7 @@ fi
 
 # Deploy Vault
 echo "🔐 Deploying Vault..."
-if kubectl apply -f k8s/vault/vault.yml; then
+if kubectl apply -f ./k8s/vault/vault.yml; then
     echo "✅ Vault deployed successfully"
 else
     echo "❌ Failed to deploy Vault"
@@ -44,7 +44,7 @@ fi
 
 # Deploy database
 echo "🐘 Deploying PostgreSQL database..."
-if kubectl apply -f k8s/manifests/database.yml; then
+if kubectl apply -f ./k8s/manifests/database.yml; then
     echo "✅ PostgreSQL database deployed successfully"
 else
     echo "❌ Failed to deploy PostgreSQL database"
@@ -53,7 +53,7 @@ fi
 
 # Deploy External Secrets
 echo "🔗 Deploying External Secrets..."
-if kubectl apply -f k8s/manifests/external-secrets.yml; then
+if kubectl apply -f ./k8s/manifests/external-secrets.yml; then
     echo "✅ External Secrets deployed successfully"
 else
     echo "❌ Failed to deploy External Secrets"
@@ -80,7 +80,7 @@ fi
 
 # Deploy application
 echo "🌐 Deploying application..."
-if kubectl apply -f k8s/manifests/application.yml; then
+if kubectl apply -f ./k8s/manifests/application.yml; then
     echo "✅ Application deployed successfully"
 else
     echo "❌ Failed to deploy application"
