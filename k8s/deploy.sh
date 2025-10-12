@@ -19,9 +19,24 @@ fi
 
 # Wait for External Secrets CRDs to be ready
 echo "⏳ Waiting for External Secrets CRDs..."
-kubectl wait --for condition=established --timeout=60s crd/secretstores.external-secrets.io
-kubectl wait --for condition=established --timeout=60s crd/externalsecrets.external-secrets.io
-echo "✅ External Secrets CRDs are ready"
+echo "Checking available CRDs..."
+kubectl get crd | grep external-secrets || echo "No external-secrets CRDs found"
+
+# Wait for ESO pods to be ready first
+echo "Waiting for External Secrets Operator pods..."
+kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=external-secrets -n external-secrets-system --timeout=120s
+
+# Wait a bit more for CRDs to be registered
+sleep 10
+
+# Check CRDs again
+if kubectl get crd secretstores.external-secrets.io && kubectl get crd externalsecrets.external-secrets.io; then
+    echo "✅ External Secrets CRDs are ready"
+else
+    echo "❌ External Secrets CRDs not found, checking what's available:"
+    kubectl get crd | grep external
+    exit 1
+fi
 
 # Deploy Vault
 echo "🔐 Deploying Vault..."
