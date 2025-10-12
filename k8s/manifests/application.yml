@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: student-api
+data:
+  PORT: "3000"
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "futa_students"
+  DB_USER: "postgres"
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: futa-students-api
+  namespace: student-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: futa-students-api
+  template:
+    metadata:
+      labels:
+        app: futa-students-api
+    spec:
+      nodeSelector:
+        type: application
+      initContainers:
+      - name: db-migration
+        image: johntoby/futa-students-api:latest
+        imagePullPolicy: IfNotPresent
+        command: ["node", "src/migrations/migrate.js"]
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secret
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+      containers:
+      - name: futa-students-api
+        image: johntoby/futa-students-api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secret
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        readinessProbe:
+          httpGet:
+            path: /api/v1/healthcheck
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/v1/healthcheck
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: futa-students-api-service
+  namespace: student-api
+spec:
+  selector:
+    app: futa-students-api
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: ClusterIP
