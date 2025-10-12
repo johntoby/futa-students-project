@@ -37,9 +37,8 @@ fi
 
 # Configure Vault secrets
 echo "🔑 Configuring Vault secrets..."
-if kubectl exec -n vault-system deployment/vault -- vault auth -method=token token=root-token && \
-   kubectl exec -n vault-system deployment/vault -- vault kv put secret/database password=postgres123 && \
-   kubectl exec -n vault-system deployment/vault -- vault kv put secret/application jwt_secret=your-jwt-secret-key; then
+if kubectl exec -n vault-system deployment/vault -- sh -c 'VAULT_TOKEN=root-token vault kv put secret/database password=postgres123' && \
+   kubectl exec -n vault-system deployment/vault -- sh -c 'VAULT_TOKEN=root-token vault kv put secret/application jwt_secret=your-jwt-secret-key'; then
     echo "✅ Vault secrets configured successfully"
 else
     echo "❌ Failed to configure Vault secrets"
