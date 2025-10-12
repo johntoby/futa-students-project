@@ -17,6 +17,12 @@ else
     exit 1
 fi
 
+# Wait for External Secrets CRDs to be ready
+echo "⏳ Waiting for External Secrets CRDs..."
+kubectl wait --for condition=established --timeout=60s crd/secretstores.external-secrets.io
+kubectl wait --for condition=established --timeout=60s crd/externalsecrets.external-secrets.io
+echo "✅ External Secrets CRDs are ready"
+
 # Deploy Vault
 echo "🔐 Deploying Vault..."
 if kubectl apply -f vault/vault.yml; then
