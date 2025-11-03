@@ -10,7 +10,7 @@ docker stop futa-postgres futa-students-app 2>/dev/null || true
 docker rm futa-postgres futa-students-app 2>/dev/null || true
 
 # Create Docker network
-echo "📡 Creating Docker network..."
+echo "📡 Creating the secured Docker network..."
 docker network create futa-network 2>/dev/null || echo "Network already exists"
 
 # Start PostgreSQL container
